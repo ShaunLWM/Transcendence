@@ -21,7 +21,7 @@ export default function TransactionsHistory() {
 		async function fetchTransactions() {
 			try {
 				const results = await fetch(
-					`https://api.bscscan.com/api?module=account&action=txlist&address=0xbe807dddb074639cd9fa61b47676c064fc50d62c&startblock=8375151&endblock=8375340page=1&offset=10&sort=asc&apikey=YourApiKeyToken`,
+					`https://api.bscscan.com/api?module=account&action=txlist&address=0xb91b4bdb52ea76d2849d04128b0ce319699a387a&startblock=8370234&endblock=99999999&sort=asc&apikey=YourApiKeyToken`,
 				);
 				const json = (await results.json()) as BSCTransactionsResult;
 				setTransactions(json.result.reverse());
@@ -58,7 +58,13 @@ export default function TransactionsHistory() {
 			<StyledScrollView showsVerticalScrollIndicator={false}>
 				<BigHeader text="Transactions" />
 				{transactions.map(transaction => {
-					return <TransactionItem {...transaction}/>;
+					return (
+						<TransactionItem
+							key={transaction.hash}
+							{...transaction}
+							walletAddress="0xb91b4bdb52ea76d2849d04128b0ce319699a387a"
+						/>
+					);
 				})}
 			</StyledScrollView>
 		</SafeAreaView>
