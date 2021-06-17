@@ -1,4 +1,4 @@
-package com.transcendence;
+package io.lazysloths.transcendence;
 
 import com.facebook.react.ReactActivity;
 
