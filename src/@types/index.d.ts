@@ -16,7 +16,7 @@ interface BSCTransaction {
 	value: string;
 	gas: string;
 	gasPrice: string;
-	isError: string;
+	isError: "0" | "1";
 	txreceipt_status: string;
 	input: string;
 	contractAddress: string;
