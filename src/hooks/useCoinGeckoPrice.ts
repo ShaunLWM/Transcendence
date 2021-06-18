@@ -1,11 +1,10 @@
-import React, {useEffect} from "react";
+import {useEffect} from "react";
+import {TOKENS} from "../utils/Constants";
 import {useDispatch} from "react-redux";
 import {setPrices} from "../store/slices/CoinGecko";
-import {TOKENS} from "../utils/Constants";
 
-export default function CoinGeckoHydrator() {
+export default function useCoinGeckoPrice() {
 	const dispatch = useDispatch();
-
 	useEffect(() => {
 		const fetchPrices = async () => {
 			const results = await fetch(
@@ -19,7 +18,5 @@ export default function CoinGeckoHydrator() {
 		};
 
 		fetchPrices();
-	}, []);
-
-	return <></>;
+	}, [dispatch]);
 }

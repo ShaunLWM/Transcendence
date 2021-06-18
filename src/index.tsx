@@ -3,10 +3,10 @@ import {createStackNavigator} from "@react-navigation/stack";
 import React from "react";
 import {StatusBar} from "react-native";
 import {Provider} from "react-redux";
-import CoinGeckoHydrator from "./common/CoinGeckoHydrator";
+import useCoinGeckoPrice from "./hooks/useCoinGeckoPrice";
 import TransactionsHistoryScreen from "./screens/TransactionsHistoryScreen";
 import WalletScreen from "./screens/WalletScreen";
-import {store} from "./store";
+import store from "./store";
 
 type RootStackParamList = {
 	WalletScreen: undefined;
@@ -16,9 +16,10 @@ type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
+	useCoinGeckoPrice();
+
 	return (
 		<Provider store={store}>
-			<CoinGeckoHydrator />
 			<StatusBar
 				barStyle="dark-content"
 				showHideTransition="slide"
