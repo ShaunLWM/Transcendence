@@ -1,11 +1,16 @@
+import {RouteProp, useRoute} from "@react-navigation/native";
 import React, {useEffect, useState} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import {CollapsibleHeaderFlatList} from "react-native-collapsible-header-views";
 import {getStatusBarHeight} from "react-native-status-bar-height";
+import {RootStackParamList} from "..";
 import BigHeader from "../common/BigHeader";
 import TransactionItem from "../common/TransactionItem";
+import {generateTransactionApi} from "../utils/Helper";
 
 export default function TransactionsHistoryScreen() {
+	const route =
+		useRoute<RouteProp<RootStackParamList, "TransactionsHistory">>();
 	const [error, setError] = useState<string>();
 	const [isLoading, setLoading] = useState(true);
 	const [transactions, setTransactions] = useState<BSCTransaction[]>([]);
@@ -14,8 +19,10 @@ export default function TransactionsHistoryScreen() {
 	useEffect(() => {
 		async function fetchTransactions() {
 			try {
+				if (!route.params.address || route.params.address)
+					return console.log("Missing information");
 				const results = await fetch(
-					`https://api.bscscan.com/api?module=account&action=txlist&address=0xb91b4bdb52ea76d2849d04128b0ce319699a387a&startblock=8370234&endblock=99999999&sort=asc&apikey=YourApiKeyToken`,
+					generateTransactionApi(route.params.type, route.params.address, page),
 				);
 				const json = (await results.json()) as BSCTransactionsResult;
 				setTransactions(json.result.reverse());
@@ -29,7 +36,7 @@ export default function TransactionsHistoryScreen() {
 		}
 
 		fetchTransactions();
-	}, []);
+	}, [page, route.params.address, route.params.type]);
 
 	if (isLoading) {
 		return (

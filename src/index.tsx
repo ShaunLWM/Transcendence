@@ -2,15 +2,17 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import React from "react";
 import {StatusBar} from "react-native";
-import {Provider} from "react-redux";
 import useCoinGeckoPrice from "./hooks/useCoinGeckoPrice";
 import TransactionsHistoryScreen from "./screens/TransactionsHistoryScreen";
 import WalletScreen from "./screens/WalletScreen";
-import store from "./store";
+import {PriceKey} from "./store/slices/CoinGecko";
 
-type RootStackParamList = {
+export type RootStackParamList = {
 	WalletScreen: undefined;
-	TransactionsHistory: undefined;
+	TransactionsHistory: {
+		type: PriceKey;
+		address: string;
+	};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
