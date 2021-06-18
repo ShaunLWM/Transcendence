@@ -24,3 +24,9 @@ interface BSCTransaction {
 	gasUsed: string;
 	confirmations: string;
 }
+
+type TupleToObject<T extends readonly string[]> = {
+	[P in T[number]]: {
+		usd: number;
+	};
+};

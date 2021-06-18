@@ -1,10 +1,12 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
-import * as React from "react";
+import React from "react";
 import {StatusBar} from "react-native";
-import {SafeAreaProvider} from "react-native-safe-area-context";
+import {Provider} from "react-redux";
+import CoinGeckoHydrator from "./common/CoinGeckoHydrator";
 import TransactionsHistoryScreen from "./screens/TransactionsHistoryScreen";
 import WalletScreen from "./screens/WalletScreen";
+import {store} from "./store";
 
 type RootStackParamList = {
 	WalletScreen: undefined;
@@ -15,7 +17,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
 	return (
-		<>
+		<Provider store={store}>
+			<CoinGeckoHydrator />
 			<StatusBar
 				barStyle="dark-content"
 				showHideTransition="slide"
@@ -36,7 +39,7 @@ function App() {
 					<Stack.Screen name="WalletScreen" component={WalletScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
-		</>
+		</Provider>
 	);
 }
 
