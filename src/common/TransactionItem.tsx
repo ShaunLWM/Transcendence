@@ -66,7 +66,7 @@ const TotalPrice = styled.Text`
 	text-align: right;
 `;
 
-interface Props extends BSCTransaction {
+interface Props {
 	tx: BSCTransaction;
 	walletAddress: string;
 }

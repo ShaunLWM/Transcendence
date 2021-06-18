@@ -61,7 +61,7 @@ export default function TransactionsHistoryScreen() {
 				renderItem={({item}) => (
 					<TransactionItem
 						key={item.hash}
-						{...item}
+						tx={item}
 						walletAddress="0xb91b4bdb52ea76d2849d04128b0ce319699a387a"
 					/>
 				)}
