@@ -15,10 +15,17 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
 	return (
-		<SafeAreaProvider>
-			<StatusBar barStyle={"light-content"} />
+		<>
+			<StatusBar
+				barStyle="dark-content"
+				showHideTransition="slide"
+				hidden={false}
+				translucent={true}
+				backgroundColor="transparent"
+			/>
 			<NavigationContainer>
 				<Stack.Navigator
+					headerMode="none"
 					screenOptions={{
 						headerShown: false,
 					}}>
@@ -29,7 +36,7 @@ function App() {
 					<Stack.Screen name="WalletScreen" component={WalletScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
-		</SafeAreaProvider>
+		</>
 	);
 }
 

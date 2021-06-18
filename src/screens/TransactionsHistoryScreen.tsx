@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {View, Text} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
-import styled from "styled-components/native";
+import {StyleSheet, Text, View} from "react-native";
+import {CollapsibleHeaderFlatList} from "react-native-collapsible-header-views";
+import {getStatusBarHeight} from "react-native-status-bar-height";
 import BigHeader from "../common/BigHeader";
 import TransactionItem from "../common/TransactionItem";
-
-const StyledScrollView = styled.ScrollView.attrs(() => ({
-	contentContainerStyle: {
-		paddingHorizontal: 12,
-	},
-}))``;
 
 export default function TransactionsHistoryScreen() {
 	const [error, setError] = useState<string>();
@@ -54,19 +48,34 @@ export default function TransactionsHistoryScreen() {
 	}
 
 	return (
-		<SafeAreaView>
-			<StyledScrollView showsVerticalScrollIndicator={false}>
-				<BigHeader text="Transactions" />
-				{transactions.map(transaction => {
-					return (
-						<TransactionItem
-							key={transaction.hash}
-							{...transaction}
-							walletAddress="0xb91b4bdb52ea76d2849d04128b0ce319699a387a"
-						/>
-					);
-				})}
-			</StyledScrollView>
-		</SafeAreaView>
+		<>
+			<CollapsibleHeaderFlatList
+				style={styles.listContainer}
+				contentContainerStyle={styles.listContent}
+				CollapsibleHeaderComponent={<BigHeader text="Transactions" />}
+				headerHeight={140}
+				statusBarHeight={getStatusBarHeight()}
+				headerContainerBackgroundColor={"white"}
+				data={transactions}
+				renderItem={({item}) => (
+					<TransactionItem
+						key={item.hash}
+						{...item}
+						walletAddress="0xb91b4bdb52ea76d2849d04128b0ce319699a387a"
+					/>
+				)}
+				keyExtractor={item => item.hash}
+			/>
+		</>
 	);
 }
+
+const styles = StyleSheet.create({
+	listContainer: {
+		backgroundColor: "white",
+	},
+	listContent: {
+		backgroundColor: "white",
+		marginHorizontal: 12,
+	},
+});
