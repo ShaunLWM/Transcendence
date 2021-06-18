@@ -19,7 +19,7 @@ function App() {
 	useCoinGeckoPrice();
 
 	return (
-		<Provider store={store}>
+		<>
 			<StatusBar
 				barStyle="dark-content"
 				showHideTransition="slide"
@@ -40,7 +40,7 @@ function App() {
 					<Stack.Screen name="WalletScreen" component={WalletScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
-		</Provider>
+		</>
 	);
 }
 
