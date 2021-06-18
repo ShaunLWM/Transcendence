@@ -3,7 +3,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import * as React from "react";
 import {StatusBar} from "react-native";
 import {SafeAreaProvider} from "react-native-safe-area-context";
-import TransactionsHistory from "./common/TransactionsHistory";
+import TransactionsHistoryScreen from "./screens/TransactionsHistoryScreen";
 import WalletScreen from "./screens/WalletScreen";
 
 type RootStackParamList = {
@@ -24,7 +24,7 @@ function App() {
 					}}>
 					<Stack.Screen
 						name="TransactionsHistory"
-						component={TransactionsHistory}
+						component={TransactionsHistoryScreen}
 					/>
 					<Stack.Screen name="WalletScreen" component={WalletScreen} />
 				</Stack.Navigator>

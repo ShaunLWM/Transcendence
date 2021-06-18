@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {View, Text} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import styled from "styled-components/native";
-import BigHeader from "./BigHeader";
-import TransactionItem from "./TransactionItem";
+import BigHeader from "../common/BigHeader";
+import TransactionItem from "../common/TransactionItem";
 
 const StyledScrollView = styled.ScrollView.attrs(() => ({
 	contentContainerStyle: {
@@ -11,7 +11,7 @@ const StyledScrollView = styled.ScrollView.attrs(() => ({
 	},
 }))``;
 
-export default function TransactionsHistory() {
+export default function TransactionsHistoryScreen() {
 	const [error, setError] = useState<string>();
 	const [isLoading, setLoading] = useState(true);
 	const [transactions, setTransactions] = useState<BSCTransaction[]>([]);
