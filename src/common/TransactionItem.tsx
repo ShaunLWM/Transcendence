@@ -29,7 +29,6 @@ interface HasFlexProps {
 }
 
 const RowContainer = styled.View<HasFlexProps>`
-	background-color: blue;
 	display: flex;
 	justify-content: center;
 	${({$flex}) =>
@@ -110,7 +109,7 @@ export default function TransactionItem({
 			</RowContainer>
 			<RowContainer $flex={2}>
 				<AmountText numberOfLines={1} adjustsFontSizeToFit>
-					{new BigNumber(value).dividedBy(HugeNumber).toString(10)} BNB ($100)
+					{new BigNumber(value).dividedBy(HugeNumber).toString(10)} BNB
 				</AmountText>
 				<GasUsed numberOfLines={1}>
 					{new BigNumber(gasPrice).dividedBy(HugeNumber).toString(10)} BNB
