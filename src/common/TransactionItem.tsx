@@ -15,6 +15,8 @@ const Container = styled.View`
 	align-items: center;
 	margin-bottom: 8px;
 	border-radius: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
 `;
 
 const ChipsContainer = styled.View`
@@ -40,14 +42,14 @@ const TransactionAgo = styled.Text`
 `;
 
 const AmountText = styled.Text`
-	text-align: center;
+	text-align: right;
 	/* background-color: pink; */
 	font-size: 20px;
 	font-weight: bold;
 `;
 
 const GasUsed = styled.Text`
-	text-align: center;
+	text-align: right;
 `;
 
 interface Props extends BSCTransaction {
