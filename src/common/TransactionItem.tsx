@@ -24,10 +24,19 @@ const ChipsContainer = styled.View`
 	flex-direction: row;
 `;
 
-const RowContainer = styled.View`
+interface HasFlexProps {
+	$flex?: number;
+}
+
+const RowContainer = styled.View<HasFlexProps>`
+	background-color: blue;
 	display: flex;
-	flex: 1;
 	justify-content: center;
+	${({$flex}) =>
+		$flex &&
+		`
+    flex: ${$flex};
+  `}
 `;
 
 const BlockNoText = styled.Text`
@@ -85,7 +94,7 @@ export default function TransactionItem({
 
 	return (
 		<Container>
-			<RowContainer>
+			<RowContainer $flex={1}>
 				<ChipsContainer>
 					<TextChip text={detectTransactionDirection} color={chipColor} />
 					<TextChip
@@ -99,8 +108,8 @@ export default function TransactionItem({
 					{fromNow(parseInt(timeStamp, 10) * 1000)}
 				</TransactionAgo>
 			</RowContainer>
-			<RowContainer>
-				<AmountText numberOfLines={1}>
+			<RowContainer $flex={2}>
+				<AmountText numberOfLines={1} adjustsFontSizeToFit>
 					{new BigNumber(value).dividedBy(HugeNumber).toString(10)} BNB ($100)
 				</AmountText>
 				<GasUsed numberOfLines={1}>
