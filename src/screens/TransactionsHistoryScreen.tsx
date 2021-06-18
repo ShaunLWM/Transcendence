@@ -50,6 +50,7 @@ export default function TransactionsHistoryScreen() {
 	return (
 		<>
 			<CollapsibleHeaderFlatList
+				showsVerticalScrollIndicator={false}
 				style={styles.listContainer}
 				contentContainerStyle={styles.listContent}
 				CollapsibleHeaderComponent={<BigHeader text="Transactions" />}
