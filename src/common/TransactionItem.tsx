@@ -1,6 +1,8 @@
 import BigNumber from "bignumber.js";
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
+import {useSelector} from "react-redux";
 import styled from "styled-components/native";
+import {RootState} from "../store/index";
 import {fromNow} from "../utils/Helper";
 import TextChip from "./TextChip";
 
@@ -30,7 +32,7 @@ interface HasFlexProps {
 
 const RowContainer = styled.View<HasFlexProps>`
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 	${({$flex}) =>
 		$flex &&
 		`
@@ -60,22 +62,48 @@ const GasUsed = styled.Text`
 	text-align: right;
 `;
 
+const TotalPrice = styled.Text`
+	text-align: right;
+`;
+
 interface Props extends BSCTransaction {
+	tx: BSCTransaction;
 	walletAddress: string;
 }
 
-export default function TransactionItem({
-	value,
-	blockNumber,
-	from,
-	timeStamp,
-	walletAddress,
-	gasPrice,
-	isError,
-}: Props) {
+interface TransformedTransactionItem extends BSCTransaction {
+	amountToken: string;
+	gasToken: string;
+	amountUsd: string;
+	gasUsd: string;
+	totalUsd: string;
+}
+
+export default function TransactionItem({tx, walletAddress}: Props) {
+	const prices = useSelector((state: RootState) => state.coingecko.prices);
+	const [item, setItem] = useState<TransformedTransactionItem>();
+
+	useEffect(() => {
+		const amountToken = new BigNumber(tx.value).dividedBy(HugeNumber);
+		const gasToken = new BigNumber(tx.gasPrice).dividedBy(HugeNumber);
+		const amountUsd = amountToken.multipliedBy(prices.bnb);
+		const gasUsd = gasToken.multipliedBy(prices.bnb);
+		setItem(
+			Object.assign({}, tx, {
+				amountToken: amountToken.toString(10),
+				gasToken: gasToken.toString(10),
+				amountUsd: amountUsd.toFixed(2),
+				gasUsd: gasUsd.toFixed(2),
+				totalUsd: `${walletAddress === tx.from ? "-" : "+"}$${amountUsd
+					.plus(gasUsd)
+					.toFixed(2)}`,
+			}),
+		);
+	}, [prices.bnb, tx, walletAddress]);
+
 	const detectTransactionDirection = useMemo(() => {
-		return walletAddress === from ? "outgoing" : "incoming";
-	}, [from, walletAddress]);
+		return walletAddress === tx.from ? "outgoing" : "incoming";
+	}, [tx.from, walletAddress]);
 
 	const chipColor = useMemo(
 		() => (detectTransactionDirection === "incoming" ? "#14a85e" : "#a81441"),
@@ -83,12 +111,12 @@ export default function TransactionItem({
 	);
 
 	const successChip = useMemo(() => {
-		return isError === "0" ? "success" : "failed";
-	}, [isError]);
+		return tx.isError === "0" ? "success" : "failed";
+	}, [tx.isError]);
 
 	const sucessColor = useMemo(
-		() => (isError === "0" ? "#14a85e" : "#a81441"),
-		[isError],
+		() => (tx.isError === "0" ? "#14a85e" : "#a81441"),
+		[tx.isError],
 	);
 
 	return (
@@ -102,18 +130,17 @@ export default function TransactionItem({
 						style={{marginLeft: 4}}
 					/>
 				</ChipsContainer>
-				<BlockNoText numberOfLines={1}>Block: {blockNumber}</BlockNoText>
+				<BlockNoText numberOfLines={1}>Block: {tx.blockNumber}</BlockNoText>
 				<TransactionAgo numberOfLines={1}>
-					{fromNow(parseInt(timeStamp, 10) * 1000)}
+					{fromNow(parseInt(tx.timeStamp, 10) * 1000)}
 				</TransactionAgo>
 			</RowContainer>
 			<RowContainer $flex={2}>
 				<AmountText numberOfLines={1} adjustsFontSizeToFit>
-					{new BigNumber(value).dividedBy(HugeNumber).toString(10)} BNB
+					{item?.amountToken} BNB
 				</AmountText>
-				<GasUsed numberOfLines={1}>
-					{new BigNumber(gasPrice).dividedBy(HugeNumber).toString(10)} BNB
-				</GasUsed>
+				<GasUsed numberOfLines={1}>{item?.gasToken} BNB</GasUsed>
+				<TotalPrice>{item?.totalUsd}</TotalPrice>
 			</RowContainer>
 		</Container>
 	);
