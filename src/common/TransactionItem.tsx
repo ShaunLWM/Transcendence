@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import {fromNow} from "../utils/Helper";
 import TextChip from "./TextChip";
 
-const HugeNumber = new BigNumber(1000000000000000000);
+const HugeNumber = new BigNumber(1e18);
 
 const Container = styled.View`
 	display: flex;
