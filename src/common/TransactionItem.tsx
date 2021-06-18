@@ -106,7 +106,7 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 	}, [tx.from, walletAddress]);
 
 	const chipColor = useMemo(
-		() => (detectTransactionDirection === "incoming" ? "#14a85e" : "#a81441"),
+		() => (detectTransactionDirection === "incoming" ? "#bdb0d0" : "#6cc7f2"),
 		[detectTransactionDirection],
 	);
 
@@ -115,7 +115,7 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 	}, [tx.isError]);
 
 	const sucessColor = useMemo(
-		() => (tx.isError === "0" ? "#14a85e" : "#a81441"),
+		() => (tx.isError === "0" ? "#77dd77" : "#ff6961"),
 		[tx.isError],
 	);
 
