@@ -27,6 +27,7 @@
 		"react-native-screens": "^3.3.0",
 		"react-native-status-bar-height": "^2.6.0",
 		"react-redux": "^7.2.4",
+		"realm": "^10.4.2",
 		"redux-flipper": "^1.4.2",
 		"styled-components": "^5.3.0"
 	},
