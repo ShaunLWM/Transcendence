@@ -69,7 +69,7 @@ export default function TransactionsHistoryScreen() {
 					<TransactionItem
 						key={item.hash}
 						tx={item}
-						walletAddress="0xb91b4bdb52ea76d2849d04128b0ce319699a387a"
+						walletAddress={route.params.address}
 					/>
 				)}
 				keyExtractor={item => item.hash}
