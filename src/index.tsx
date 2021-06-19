@@ -35,11 +35,11 @@ function App() {
 					screenOptions={{
 						headerShown: false,
 					}}>
+					<Stack.Screen name="WalletScreen" component={WalletScreen} />
 					<Stack.Screen
 						name="TransactionsHistory"
 						component={TransactionsHistoryScreen}
 					/>
-					<Stack.Screen name="WalletScreen" component={WalletScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>
