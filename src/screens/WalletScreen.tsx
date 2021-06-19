@@ -1,4 +1,4 @@
-import React from "react";
+import {StyleSheet, Text} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
 import {FloatingAction} from "react-native-floating-action";
 import {getStatusBarHeight} from "react-native-status-bar-height";
@@ -30,10 +30,31 @@ const FAB_ACTIONS = [
 export default function WalletScreen() {
 	return (
 		<>
-		<CollapsibleHeaderSectionList
-			CollapsibleHeaderComponent={<BigHeader text="Wallet" />}
-			headerHeight={100}
-			statusBarHeight={getStatusBarHeight()}
+			<CollapsibleHeaderSectionList
+				style={styles.listContainer}
+				contentContainerStyle={styles.listContent}
+				CollapsibleHeaderComponent={<BigHeader text="Home" />}
+				headerHeight={140}
+				statusBarHeight={getStatusBarHeight()}
+				headerContainerBackgroundColor={"white"}
+				renderItem={({item}) => {
+					return <Text>{item}</Text>;
+				}}
+				renderSectionHeader={({section: {title}}) => (
+					<Text style={{fontSize: 30}}>{title}</Text>
+				)}
+				// keyExtractor={(item, index) => item + index}
+				sections={[
+					{
+						title: "Latest Transactions",
+						data: [],
+					},
+					{
+						title: "Wallets",
+						data: [],
+					},
+				]}
+			/>
 			<FloatingAction
 				actions={FAB_ACTIONS}
 				onPressItem={name => {
@@ -43,3 +64,13 @@ export default function WalletScreen() {
 		</>
 	);
 }
+
+const styles = StyleSheet.create({
+	listContainer: {
+		backgroundColor: "white",
+	},
+	listContent: {
+		backgroundColor: "white",
+		marginHorizontal: 12,
+	},
+});
