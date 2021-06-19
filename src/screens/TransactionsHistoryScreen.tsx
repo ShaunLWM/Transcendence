@@ -25,7 +25,7 @@ export default function TransactionsHistoryScreen() {
 					generateTransactionApi(route.params.type, route.params.address, page),
 				);
 				const json = (await results.json()) as BSCTransactionsResult;
-				setTransactions(json.result.reverse());
+				setTransactions(json.result);
 				setLoading(false);
 				setError(undefined);
 			} catch (err) {
