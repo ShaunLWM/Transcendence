@@ -13,6 +13,8 @@ interface ITransaction {
 	isError: string;
 	confirmations: string;
 	address: Realm.Results<WalletSchema> | WalletSchema;
+	gas: string;
+	nonce: string;
 }
 
 export default class TransactionSchema {
@@ -27,6 +29,8 @@ export default class TransactionSchema {
 	isError: string;
 	confirmations: string;
 	address: Realm.Results<WalletSchema> | WalletSchema;
+	gas: string;
+	nonce: string;
 
 	public static schema: Realm.ObjectSchema = {
 		name: "TransactionItem",
@@ -63,5 +67,8 @@ export default class TransactionSchema {
 		this.confirmations = tx.confirmations;
 		this.address = tx.address;
 		// https://github.com/bStrano/Stralom-Financial/blob/master/src/modules/Transactions/models/TransactionCategory.ts
+
+		this.gas = tx.gas;
+		this.nonce = tx.nonce;
 	}
 }
