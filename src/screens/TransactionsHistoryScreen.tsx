@@ -1,15 +1,17 @@
-import {RouteProp, useRoute} from "@react-navigation/native";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import React, {useEffect, useState} from "react";
 import {StyleSheet, Text, View, ViewStyle} from "react-native";
 import {CollapsibleHeaderFlatList} from "react-native-collapsible-header-views";
 import {getStatusBarHeight} from "react-native-status-bar-height";
-import {RootStackParamList} from "..";
+import {MainStackParamList} from "..";
 import BigHeader from "../common/BigHeader";
 import TransactionItem from "../common/TransactionItem";
 import {generateTransactionApi} from "../utils/Helper";
 
 export default function TransactionsHistoryScreen() {
-	const route = useRoute<RouteProp<RootStackParamList, "TransactionsHistory">>();
+	const route = useRoute<RouteProp<MainStackParamList, "TransactionsHistory">>();
+	const navigation = useNavigation();
+
 	const [error, setError] = useState<string>();
 	const [isLoading, setLoading] = useState(true);
 	const [transactions, setTransactions] = useState<BSCTransaction[]>([]);
@@ -56,7 +58,7 @@ export default function TransactionsHistoryScreen() {
 				showsVerticalScrollIndicator={false}
 				style={styles.listContainer}
 				contentContainerStyle={styles.listContent}
-				CollapsibleHeaderComponent={<BigHeader text="Transactions" />}
+				CollapsibleHeaderComponent={<BigHeader text="Transactions" onBackPress={() => navigation.goBack()} />}
 				headerHeight={140}
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
