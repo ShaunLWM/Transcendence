@@ -1,6 +1,6 @@
 import {RouteProp, useRoute} from "@react-navigation/native";
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, View, ViewStyle} from "react-native";
 import {CollapsibleHeaderFlatList} from "react-native-collapsible-header-views";
 import {getStatusBarHeight} from "react-native-status-bar-height";
 import {RootStackParamList} from "..";
@@ -66,6 +66,11 @@ export default function TransactionsHistoryScreen() {
 			/>
 		</>
 	);
+}
+
+interface Styles {
+	listContainer: ViewStyle;
+	listContent: ViewStyle;
 }
 
 const styles = StyleSheet.create({

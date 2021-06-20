@@ -1,6 +1,6 @@
 import {useNavigation} from "@react-navigation/native";
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, ViewStyle} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
 import {FloatingAction} from "react-native-floating-action";
 import {getStatusBarHeight} from "react-native-status-bar-height";
@@ -121,7 +121,12 @@ export default function WalletScreen() {
 	);
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+	listContainer: ViewStyle;
+	listContent: ViewStyle;
+}
+
+const styles = StyleSheet.create<Styles>({
 	listContainer: {
 		backgroundColor: "white",
 	},
