@@ -34,7 +34,7 @@ export default class TransactionSchema {
 
 	public static schema: Realm.ObjectSchema = {
 		name: "TransactionItem",
-		primaryKey: "_id",
+		primaryKey: "hash",
 		properties: {
 			type: "string", // bsc, polygon etc
 			hash: "string",
