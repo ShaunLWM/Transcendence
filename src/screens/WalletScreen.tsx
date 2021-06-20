@@ -1,3 +1,4 @@
+import {useNavigation} from "@react-navigation/native";
 import React, {useEffect, useState} from "react";
 import {StyleSheet, Text} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
@@ -35,6 +36,7 @@ const FAB_ACTIONS = [
 ];
 
 export default function WalletScreen() {
+	const navigation = useNavigation();
 	const [wallets, setWallets] = useState<IWallet[]>([]);
 	const [latestTransactions, setLatestTransactions] = useState<ITransaction[]>([]);
 
@@ -75,6 +77,19 @@ export default function WalletScreen() {
 		return null;
 	};
 
+	const onFabSelect = (name?: string) => {
+		if (!name) return;
+		switch (name) {
+			case "fab_manual":
+				navigation.navigate("AddWalletModal");
+				break;
+			case "fab_scan":
+				navigation.navigate("QRCodeScannerModal");
+				break;
+			default:
+		}
+	};
+
 	return (
 		<>
 			<CollapsibleHeaderSectionList
@@ -101,12 +116,7 @@ export default function WalletScreen() {
 					},
 				]}
 			/>
-			<FloatingAction
-				actions={FAB_ACTIONS}
-				onPressItem={name => {
-					console.log(`selected button: ${name}`);
-				}}
-			/>
+			<FloatingAction actions={FAB_ACTIONS} onPressItem={onFabSelect} />
 		</>
 	);
 }
