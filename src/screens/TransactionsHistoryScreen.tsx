@@ -20,7 +20,7 @@ export default function TransactionsHistoryScreen() {
 	useEffect(() => {
 		async function fetchTransactions() {
 			try {
-				if (!route.params.address || route.params.address) return console.log("Missing information");
+				if (!route.params.address || !route.params.type) return console.log("Missing information");
 				const results = await fetch(generateTransactionApi(route.params.type, route.params.address, page));
 				const json = (await results.json()) as BSCTransactionsResult;
 				setTransactions(json.result);
