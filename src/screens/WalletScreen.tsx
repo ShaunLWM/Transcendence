@@ -13,17 +13,17 @@ import {generateTransactionApi, getRealm} from "../utils/Helper";
 
 const FAB_ACTIONS = [
 	{
-		text: "Add Wallet Address",
+		text: "Input Wallet Address",
 		icon: require("../assets/misc/select.png"),
-		name: "bt_accessibility",
-		position: 2,
+		name: "fab_manual",
+		position: 1,
 		color: "#E0BBE4",
 	},
 	{
-		text: "Add QR Code",
+		text: "Scan QR Code",
 		icon: require("../assets/misc/camera.png"),
-		name: "bt_language",
-		position: 1,
+		name: "fab_scan",
+		position: 2,
 		color: "#957DAD",
 	},
 	{
