@@ -8,9 +8,7 @@ export default function useCoinGeckoPrice() {
 	useEffect(() => {
 		const fetchPrices = async () => {
 			const results = await fetch(
-				`https://api.coingecko.com/api/v3/simple/price?ids=${encodeURI(
-					TOKENS.join(","),
-				)}&vs_currencies=usd`,
+				`https://api.coingecko.com/api/v3/simple/price?ids=${encodeURI(TOKENS.join(","))}&vs_currencies=usd`,
 			);
 
 			const json = (await results.json()) as TupleToObject<typeof TOKENS>;

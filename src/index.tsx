@@ -36,10 +36,7 @@ function App() {
 						headerShown: false,
 					}}>
 					<Stack.Screen name="WalletScreen" component={WalletScreen} />
-					<Stack.Screen
-						name="TransactionsHistory"
-						component={TransactionsHistoryScreen}
-					/>
+					<Stack.Screen name="TransactionsHistory" component={TransactionsHistoryScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>

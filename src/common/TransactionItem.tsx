@@ -94,9 +94,7 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 				gasToken: gasToken.toString(10),
 				amountUsd: amountUsd.toFixed(2),
 				gasUsd: gasUsd.toFixed(2),
-				totalUsd: `${walletAddress === tx.from ? "-" : "+"}$${amountUsd
-					.plus(gasUsd)
-					.toFixed(2)}`,
+				totalUsd: `${walletAddress === tx.from ? "-" : "+"}$${amountUsd.plus(gasUsd).toFixed(2)}`,
 			}),
 		);
 	}, [prices.bnb, tx, walletAddress]);
@@ -114,26 +112,17 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 		return tx.isError === "0" ? "success" : "failed";
 	}, [tx.isError]);
 
-	const sucessColor = useMemo(
-		() => (tx.isError === "0" ? "#77dd77" : "#ff6961"),
-		[tx.isError],
-	);
+	const sucessColor = useMemo(() => (tx.isError === "0" ? "#77dd77" : "#ff6961"), [tx.isError]);
 
 	return (
 		<Container>
 			<RowContainer $flex={1}>
 				<ChipsContainer>
 					<TextChip text={detectTransactionDirection} color={chipColor} />
-					<TextChip
-						text={successChip}
-						color={sucessColor}
-						style={{marginLeft: 4}}
-					/>
+					<TextChip text={successChip} color={sucessColor} style={{marginLeft: 4}} />
 				</ChipsContainer>
 				<BlockNoText numberOfLines={1}>Block: {tx.blockNumber}</BlockNoText>
-				<TransactionAgo numberOfLines={1}>
-					{fromNow(parseInt(tx.timeStamp, 10) * 1000)}
-				</TransactionAgo>
+				<TransactionAgo numberOfLines={1}>{fromNow(parseInt(tx.timeStamp, 10) * 1000)}</TransactionAgo>
 			</RowContainer>
 			<RowContainer $flex={2}>
 				<AmountText numberOfLines={1} adjustsFontSizeToFit>

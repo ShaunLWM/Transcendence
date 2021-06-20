@@ -40,8 +40,7 @@ const coingeckoSlice = createSlice({
 		},
 		setPrices(state, action: PayloadAction<TupleToObject<string[]>>) {
 			for (const [key, value] of Object.entries(action.payload)) {
-				state.prices[getPriceKeyFromJson(key as typeof TOKENS[number])] =
-					value.usd;
+				state.prices[getPriceKeyFromJson(key as typeof TOKENS[number])] = value.usd;
 			}
 		},
 	},

@@ -9,8 +9,7 @@ import TransactionItem from "../common/TransactionItem";
 import {generateTransactionApi} from "../utils/Helper";
 
 export default function TransactionsHistoryScreen() {
-	const route =
-		useRoute<RouteProp<RootStackParamList, "TransactionsHistory">>();
+	const route = useRoute<RouteProp<RootStackParamList, "TransactionsHistory">>();
 	const [error, setError] = useState<string>();
 	const [isLoading, setLoading] = useState(true);
 	const [transactions, setTransactions] = useState<BSCTransaction[]>([]);
@@ -19,11 +18,8 @@ export default function TransactionsHistoryScreen() {
 	useEffect(() => {
 		async function fetchTransactions() {
 			try {
-				if (!route.params.address || route.params.address)
-					return console.log("Missing information");
-				const results = await fetch(
-					generateTransactionApi(route.params.type, route.params.address, page),
-				);
+				if (!route.params.address || route.params.address) return console.log("Missing information");
+				const results = await fetch(generateTransactionApi(route.params.type, route.params.address, page));
 				const json = (await results.json()) as BSCTransactionsResult;
 				setTransactions(json.result);
 				setLoading(false);
@@ -65,13 +61,7 @@ export default function TransactionsHistoryScreen() {
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
 				data={transactions}
-				renderItem={({item}) => (
-					<TransactionItem
-						key={item.hash}
-						tx={item}
-						walletAddress={route.params.address}
-					/>
-				)}
+				renderItem={({item}) => <TransactionItem key={item.hash} tx={item} walletAddress={route.params.address} />}
 				keyExtractor={item => item.hash}
 			/>
 		</>

@@ -13,10 +13,7 @@ export default class WalletSchema {
 	public address: string;
 	public name: string;
 	public type: PriceKey;
-	public transactions?:
-		| Realm.List<TransactionSchema>
-		| TransactionSchema[]
-		| [];
+	public transactions?: Realm.List<TransactionSchema> | TransactionSchema[] | [];
 
 	public static schema: Realm.ObjectSchema = {
 		name: "WalletItem",

@@ -36,9 +36,7 @@ export default function WalletScreen() {
 			const realm = await getRealm();
 			const addresses = realm
 				.objects<IWallet>("Address")
-				.map(address =>
-					fetch(generateTransactionApi(address.type, address.address, 1)),
-				);
+				.map(address => fetch(generateTransactionApi(address.type, address.address, 1)));
 			const results = await Promise.allSettled(addresses);
 		}
 		fetchAll();
@@ -56,9 +54,7 @@ export default function WalletScreen() {
 				renderItem={({item}) => {
 					return <Text>{item}</Text>;
 				}}
-				renderSectionHeader={({section: {title}}) => (
-					<Text style={{fontSize: 30}}>{title}</Text>
-				)}
+				renderSectionHeader={({section: {title}}) => <Text style={{fontSize: 30}}>{title}</Text>}
 				// keyExtractor={(item, index) => item + index}
 				sections={[
 					{
