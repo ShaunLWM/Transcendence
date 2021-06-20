@@ -1,10 +1,14 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {StyleSheet, Text} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
 import {FloatingAction} from "react-native-floating-action";
 import {getStatusBarHeight} from "react-native-status-bar-height";
+import {UpdateMode} from "realm";
 import BigHeader from "../common/BigHeader";
+import EmptySectionComponent from "../common/EmptySectionComponent";
+import {ITransaction} from "../models/TransactionSchema";
 import {IWallet} from "../models/WalletSchema";
+import {get} from "../utils/FetchManager";
 import {generateTransactionApi, getRealm} from "../utils/Helper";
 
 const FAB_ACTIONS = [
@@ -31,16 +35,45 @@ const FAB_ACTIONS = [
 ];
 
 export default function WalletScreen() {
+	const [wallets, setWallets] = useState<IWallet[]>([]);
+	const [latestTransactions, setLatestTransactions] = useState<ITransaction[]>([]);
+
 	useEffect(() => {
 		async function fetchAll() {
 			const realm = await getRealm();
-			const addresses = realm
-				.objects<IWallet>("Address")
-				.map(address => fetch(generateTransactionApi(address.type, address.address, 1)));
-			const results = await Promise.allSettled(addresses);
+			const addresses = realm.objects<IWallet>("WalletItem");
+			if (addresses.length < 1) return console.log(`No addresses`);
+			setWallets(addresses.map(address => ({...address})));
+			const results = await Promise.allSettled(
+				addresses.map(address => get<TransactionAPIResult>(generateTransactionApi(address.type, address.address, 1))),
+			);
+			for (const result of results) {
+				if (result.status === "rejected" || result.value.message === "NOTOK") continue;
+				realm.write(() => {
+					(result.value.result as BSCTransaction[]).map(tx => {
+						realm.create<ITransaction>("TransactionItem", {...tx}, UpdateMode.Modified);
+					});
+				});
+			}
+
+			const allTransactions = realm.objects<IWallet>("WalletItem");
+			setLatestTransactions(
+				allTransactions.sorted("timeStamp", true).map(tx => {
+					return {
+						...tx,
+					};
+				}),
+			);
 		}
 		fetchAll();
 	}, []);
+
+	const renderEmptyContent = ({section}) => {
+		if (section.data.length < 1) {
+			return <EmptySectionComponent text="Nothing to see here" />;
+		}
+		return null;
+	};
 
 	return (
 		<>
@@ -51,19 +84,20 @@ export default function WalletScreen() {
 				headerHeight={140}
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
-				renderItem={({item}) => {
-					return <Text>{item}</Text>;
-				}}
 				renderSectionHeader={({section: {title}}) => <Text style={{fontSize: 30}}>{title}</Text>}
-				// keyExtractor={(item, index) => item + index}
+				renderSectionFooter={renderEmptyContent}
 				sections={[
 					{
 						title: "Latest Transactions",
-						data: [],
+						data: latestTransactions,
+						renderItem: ({item}) => <Text style={{fontSize: 20}}>{item}</Text>,
+						keyExtractor: (item, index) => `${index}`,
 					},
 					{
 						title: "Wallets",
-						data: [],
+						data: wallets,
+						renderItem: ({item}) => <Text>{item}</Text>,
+						keyExtractor: (item, index) => `${index}`,
 					},
 				]}
 			/>

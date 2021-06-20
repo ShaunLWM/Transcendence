@@ -30,3 +30,17 @@ type TupleToObject<T extends readonly string[]> = {
 		usd: number;
 	};
 };
+
+type TransactionAPIResult = ITransactionAPISuccess | ITransactionAPIFailure;
+
+interface ITransactionAPIFailure {
+	status: "0";
+	message: "NOTOK";
+	result: string;
+}
+
+interface ITransactionAPISuccess {
+	status: "1";
+	message: "OK";
+	result: BSCTransaction[];
+}

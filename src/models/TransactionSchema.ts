@@ -1,11 +1,11 @@
 import Realm from "realm";
 import WalletSchema from "./WalletSchema";
 
-interface ITransaction {
+export interface ITransaction {
 	type: string;
 	hash: string;
 	blockNumber: string;
-	timeStamp: string;
+	timeStamp: string; // TODO: Change to number so we can sort
 	from: string;
 	to: string;
 	value: string;
