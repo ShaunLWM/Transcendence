@@ -84,8 +84,9 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 	const [item, setItem] = useState<TransformedTransactionItem>();
 
 	useEffect(() => {
+		const gwei = new BigNumber(tx.gasPrice).dividedBy(HugeNumber);
 		const amountToken = new BigNumber(tx.value).dividedBy(HugeNumber);
-		const gasToken = new BigNumber(tx.gasPrice).dividedBy(HugeNumber);
+		const gasToken = new BigNumber(tx.gasUsed).multipliedBy(gwei);
 		const amountUsd = amountToken.multipliedBy(prices.bnb);
 		const gasUsd = gasToken.multipliedBy(prices.bnb);
 		setItem(
