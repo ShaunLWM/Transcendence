@@ -100,7 +100,7 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 	}, [prices.bnb, tx, walletAddress]);
 
 	const detectTransactionDirection = useMemo(() => {
-		return walletAddress === tx.from ? "outgoing" : "incoming";
+		return walletAddress.toLocaleLowerCase() === tx.from.toLowerCase() ? "outgoing" : "incoming";
 	}, [tx.from, walletAddress]);
 
 	const chipColor = useMemo(
