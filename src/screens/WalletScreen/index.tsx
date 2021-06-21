@@ -5,31 +5,37 @@ import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-view
 import {FloatingAction} from "react-native-floating-action";
 import {getStatusBarHeight} from "react-native-status-bar-height";
 import {UpdateMode} from "realm";
-import BigHeader from "../common/BigHeader";
-import EmptySectionComponent from "../common/EmptySectionComponent";
-import {ITransaction} from "../models/TransactionSchema";
-import {IWallet} from "../models/WalletSchema";
-import {get} from "../utils/FetchManager";
-import {generateTransactionApi, getRealm} from "../utils/Helper";
+import styled from "styled-components/native";
+import BigHeader from "../../common/BigHeader";
+import EmptySectionComponent from "../../common/EmptySectionComponent";
+import {ITransaction} from "../../models/TransactionSchema";
+import {IWallet} from "../../models/WalletSchema";
+import {get} from "../../utils/FetchManager";
+import {generateTransactionApi, getRealm} from "../../utils/Helper";
+import WalletSectionItem from "./components/WalletSectionItem";
+
+const SectionHeader = styled.Text`
+	font-size: 30;
+`;
 
 const FAB_ACTIONS = [
 	{
 		text: "Input Wallet Address",
-		icon: require("../assets/misc/select.png"),
+		icon: require("../../assets/misc/select.png"),
 		name: "fab_manual",
 		position: 1,
 		color: "#E0BBE4",
 	},
 	{
 		text: "Scan QR Code",
-		icon: require("../assets/misc/camera.png"),
+		icon: require("../../assets/misc/camera.png"),
 		name: "fab_scan",
 		position: 2,
 		color: "#957DAD",
 	},
 	{
 		text: "Location",
-		icon: require("../assets/misc/camera.png"),
+		icon: require("../../assets/misc/camera.png"),
 		name: "bt_room",
 		color: "#D291BC",
 	},
@@ -87,6 +93,10 @@ export default function WalletScreen() {
 				navigation.navigate("QRCodeScannerModal");
 				break;
 			default:
+				navigation.navigate("TransactionsHistory", {
+					type: "bnb",
+					address: "0x95A27240aA0aA3Dee9CE39d9dE3D17FB5CfC9bB3",
+				});
 		}
 	};
 
@@ -99,7 +109,7 @@ export default function WalletScreen() {
 				headerHeight={140}
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
-				renderSectionHeader={({section: {title}}) => <Text style={{fontSize: 30}}>{title}</Text>}
+				renderSectionHeader={({section: {title}}) => <SectionHeader>{title}</SectionHeader>}
 				renderSectionFooter={renderEmptyContent}
 				sections={[
 					{
@@ -111,7 +121,7 @@ export default function WalletScreen() {
 					{
 						title: "Wallets",
 						data: wallets,
-						renderItem: ({item}) => <Text>{item}</Text>,
+						renderItem: ({item}) => <WalletSectionItem wallet={item as unknown as IWallet} />,
 						keyExtractor: (item, index) => `${index}`,
 					},
 				]}
