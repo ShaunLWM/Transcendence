@@ -75,7 +75,7 @@ interface Styles {
 	listContent: ViewStyle;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
 	listContainer: {
 		backgroundColor: "white",
 	},
