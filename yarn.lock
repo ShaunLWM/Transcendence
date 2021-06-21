@@ -5922,7 +5922,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.9, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -6531,6 +6531,13 @@ rimraf@~2.6.2:
   integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
   dependencies:
     glob "^7.1.3"
+
+rn-material-ui-textfield@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/rn-material-ui-textfield/-/rn-material-ui-textfield-1.0.4.tgz#12733efc89edec668f5bb2ff4bae7164eac9a746"
+  integrity sha512-SYdOZSZJbBsr+Ae1F8ItFPfg/Rgub7LHbH1fe1jmnLx6wVSl1RWb1cKuIDecOyVtWzDeCYFuFV+DBCzTib0khA==
+  dependencies:
+    prop-types "^15.5.9"
 
 rsvp@^4.8.4:
   version "4.8.5"
