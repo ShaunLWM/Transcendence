@@ -1,7 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {TOKENS} from "../../utils/Constants";
 
-export type PriceKey = "bnb" | "eth" | "btc" | "matic";
+export const PriceKeysValue = ["bnb", "eth", "btc", "matic"] as const;
+
+export type PriceKey = typeof PriceKeysValue[number];
 
 const getPriceKeyFromJson = (key: typeof TOKENS[number]): PriceKey => {
 	switch (key) {
