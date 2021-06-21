@@ -34,3 +34,16 @@ export const getRealm = async () => {
 		schema: [WalletSchema, TransactionSchema],
 	});
 };
+
+export const getWalletIcon = (type: PriceKey) => {
+	switch (type) {
+		case "bnb":
+			return require("../assets/logos/binance.svg");
+		case "btc":
+			return require("../assets/logos/binance.svg");
+		case "eth":
+			return require("../assets/logos/ethereum.svg");
+		case "matic":
+			return require("../assets/logos/polygon.svg");
+	}
+};
