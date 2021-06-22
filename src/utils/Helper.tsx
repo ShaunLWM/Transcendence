@@ -76,8 +76,7 @@ export const isValidAddress = (type: PriceKey, address: string) => {
 
 export const getRealm = async () => {
 	return await Realm.open({
-		path: "realm",
-		schema: [WalletSchema, TransactionSchema],
+		schema: [WalletSchema._schema, TransactionSchema.schema],
 	});
 };
 

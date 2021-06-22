@@ -15,7 +15,7 @@ export default class WalletSchema {
 	public type: PriceKey;
 	public transactions?: Realm.List<TransactionSchema> | TransactionSchema[] | [];
 
-	public static schema: Realm.ObjectSchema = {
+	public static _schema: Realm.ObjectSchema = {
 		name: "WalletItem",
 		primaryKey: "address",
 		properties: {
@@ -31,5 +31,9 @@ export default class WalletSchema {
 		this.address = address;
 		this.type = type;
 		this.transactions = transactions;
+	}
+
+	static get schema(): Realm.ObjectSchema {
+		return this._schema;
 	}
 }

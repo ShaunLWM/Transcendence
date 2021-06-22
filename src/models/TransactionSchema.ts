@@ -32,7 +32,7 @@ export default class TransactionSchema {
 	gas: string;
 	nonce: string;
 
-	public static schema: Realm.ObjectSchema = {
+	public static _schema: Realm.ObjectSchema = {
 		name: "TransactionItem",
 		primaryKey: "hash",
 		properties: {
@@ -70,5 +70,9 @@ export default class TransactionSchema {
 
 		this.gas = tx.gas;
 		this.nonce = tx.nonce;
+	}
+
+	static get schema(): Realm.ObjectSchema {
+		return this._schema;
 	}
 }
