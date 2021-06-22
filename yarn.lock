@@ -1135,6 +1135,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
+"@react-native-picker/picker@^1.16.1":
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.16.1.tgz#cc5d05b0d651445afa519c67824d8af3e43fa10c"
+  integrity sha512-sk07ARwL0cMXwkXsqcxyprL/KiEVD0xRFXFqznTnZs1YXqwxEqz6GiGtq2vQlK64CzXDpHX8gw1QQz47abBY1Q==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -1373,6 +1378,14 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
+
+"@types/rn-material-ui-textfield@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/rn-material-ui-textfield/-/rn-material-ui-textfield-1.0.1.tgz#358a0981a908c493c898931b882226fc2b731263"
+  integrity sha512-s1H7VbXuj4+ObOUHOazpmOs3jjEW+1I7d+oE58LEhVY1EEC6nw4ENlW6Wtl32vaERvvRmkGbGX/13Mk5yIfT7g==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
 
 "@types/scheduler@*":
   version "0.16.1"
