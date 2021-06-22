@@ -24,8 +24,30 @@ export const generateTransactionApi = (type: PriceKey, address: string, page: nu
 	}
 };
 
+function isHexString(value: string, length?: number) {
+	if (typeof value !== "string" || !value.match(/^0x[0-9A-Fa-f]*$/)) {
+		return false;
+	}
+
+	if (length && value.length !== 2 + 2 * length) {
+		return false;
+	}
+
+	return true;
+}
+
 export const isValidAddress = (type: PriceKey, address: string) => {
-	return /^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address);
+	switch (type) {
+		case "bnb":
+		case "eth":
+			if (!isHexString(address)) return false;
+			if (!/^0x[0-9a-fA-F]{40}$/.test(address)) {
+				return false;
+			}
+			return /^0x[0-9a-f]{40}$/.test(address) || /^0x?[0-9A-F]{40}$/.test(address);
+		default:
+			return true;
+	}
 };
 
 export const getRealm = async () => {
