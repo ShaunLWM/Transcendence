@@ -18,7 +18,7 @@
 		"bignumber.js": "^9.0.1",
 		"dayjs": "^1.10.5",
 		"react": "17.0.1",
-		"react-native": "0.64.1",
+		"react-native": "0.64.2",
 		"react-native-camera": "^3.44.1",
 		"react-native-collapsible-header-views": "^1.1.2",
 		"react-native-flipper": "^0.94.1",
