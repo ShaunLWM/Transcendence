@@ -4,6 +4,8 @@ import Realm from "realm";
 import TransactionSchema from "../models/TransactionSchema";
 import WalletSchema from "../models/WalletSchema";
 import {PriceKey} from "../store/slices/CoinGecko";
+import {Keccak} from "sha3";
+
 dayjs.extend(RelativeTimePlugin);
 
 export const fromNow = (time: string | number) => {
@@ -36,15 +38,37 @@ function isHexString(value: string, length?: number) {
 	return true;
 }
 
+function verifyAddressChecksum(address: string) {
+	address = address.replace("0x", "");
+	const hash = new Keccak(256);
+	const addressHash = hash.update(address.toLowerCase()).digest("hex");
+	for (let i = 0; i < 40; i += 1) {
+		if (
+			(parseInt(addressHash[i], 16) > 7 && address[i].toUpperCase() !== address[i]) ||
+			(parseInt(addressHash[i], 16) <= 7 && address[i].toLowerCase() !== address[i])
+		) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 export const isValidAddress = (type: PriceKey, address: string) => {
 	switch (type) {
 		case "bnb":
-		case "eth":
+		case "eth": {
 			if (!isHexString(address)) return false;
 			if (!/^0x[0-9a-fA-F]{40}$/.test(address)) {
 				return false;
 			}
-			return /^0x[0-9a-f]{40}$/.test(address) || /^0x?[0-9A-F]{40}$/.test(address);
+
+			if (/^0x[0-9a-f]{40}$/.test(address) || /^0x?[0-9A-F]{40}$/.test(address)) {
+				return true;
+			}
+
+			return verifyAddressChecksum(address);
+		}
 		default:
 			return true;
 	}
