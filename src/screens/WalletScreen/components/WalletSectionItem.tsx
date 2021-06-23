@@ -6,6 +6,9 @@ import {getWalletIcon} from "../../../utils/Helper";
 const Container = styled.View`
 	display: flex;
 	flex-direction: row;
+	background-color: #f1f1f1;
+	border-radius: 4px;
+	padding: 6px 0px;
 `;
 
 const Logo = styled.Image`
@@ -13,11 +16,18 @@ const Logo = styled.Image`
 	width: 16px;
 `;
 
-const Panel = styled.View``;
+const Panel = styled.View`
+	justify-content: space-evenly;
+`;
 
-const Name = styled.Text``;
+const Name = styled.Text`
+	font-weight: bold;
+	font-size: 20;
+`;
 
-const Address = styled.Text``;
+const Address = styled.Text`
+	font-size: 16;
+`;
 
 interface Props {
 	wallet: IWallet;
