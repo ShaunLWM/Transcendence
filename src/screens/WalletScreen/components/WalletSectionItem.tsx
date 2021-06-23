@@ -24,11 +24,11 @@ const Panel = styled.View`
 
 const Name = styled.Text`
 	font-weight: bold;
-	font-size: 20;
+	font-size: 18;
 `;
 
 const Address = styled.Text`
-	font-size: 16;
+	font-size: 14;
 `;
 
 interface Props {
