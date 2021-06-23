@@ -83,12 +83,12 @@ export const getRealm = async () => {
 export const getWalletIcon = (type: PriceKey) => {
 	switch (type) {
 		case "bnb":
-			return require("../assets/logos/binance.svg");
+			return require("../assets/logos/binance.png");
 		case "btc":
-			return require("../assets/logos/binance.svg");
+			return require("../assets/logos/binance.png");
 		case "eth":
-			return require("../assets/logos/ethereum.svg");
+			return require("../assets/logos/ethereum.png");
 		case "matic":
-			return require("../assets/logos/polygon.svg");
+			return require("../assets/logos/polygon.png");
 	}
 };
