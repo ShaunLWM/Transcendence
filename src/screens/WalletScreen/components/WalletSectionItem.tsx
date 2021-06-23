@@ -29,7 +29,9 @@ export default function WalletSectionItem({wallet}: Props) {
 			<Logo source={getWalletIcon(wallet.type)} />
 			<Panel>
 				<Name>{wallet.name}</Name>
-				<Address>{wallet.address}</Address>
+				<Address allowFontScaling numberOfLines={1}>
+					{wallet.address}
+				</Address>
 			</Panel>
 		</Container>
 	);
