@@ -13,8 +13,9 @@ const Container = styled.View`
 `;
 
 const Logo = styled.Image`
-	height: 16px;
-	width: 16px;
+	height: 28px;
+	width: 28px;
+	margin: 0px 10px;
 `;
 
 const Panel = styled.View`
