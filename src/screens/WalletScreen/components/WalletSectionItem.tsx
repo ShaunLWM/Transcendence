@@ -9,6 +9,7 @@ const Container = styled.View`
 	background-color: #f1f1f1;
 	border-radius: 4px;
 	padding: 6px 0px;
+	align-items: center;
 `;
 
 const Logo = styled.Image`
