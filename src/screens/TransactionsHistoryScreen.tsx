@@ -94,13 +94,13 @@ export default function TransactionsHistoryScreen() {
 				style={styles.listContainer}
 				contentContainerStyle={styles.listContent}
 				CollapsibleHeaderComponent={<BigHeader text="Transactions" onBackPress={() => navigation.goBack()} />}
-				headerHeight={200}
+				headerHeight={140}
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
 				data={transactions}
 				renderItem={({item}) => <TransactionItem key={item.hash} tx={item} />}
 				keyExtractor={item => item.hash}
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} progressViewOffset={200} />}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} progressViewOffset={140} />}
 			/>
 		</>
 	);
