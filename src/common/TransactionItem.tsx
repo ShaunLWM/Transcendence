@@ -2,18 +2,23 @@ import BigNumber from "bignumber.js";
 import React, {useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
 import styled from "styled-components/native";
+import {CustomTransaction} from "../screens/WalletScreen";
 import {RootState} from "../store/index";
 import {fromNow} from "../utils/Helper";
 import TextChip from "./TextChip";
 
 const HugeNumber = new BigNumber(1e18);
 
-const Container = styled.View`
+interface ContainerProps {
+	$compact?: boolean;
+}
+
+const Container = styled.View<ContainerProps>`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
 	background-color: #ebebeb;
-	height: 78px;
+	height: ${props => (props.$compact ? "54px" : "78px")};
 	align-items: center;
 	margin-bottom: 8px;
 	border-radius: 4px;
@@ -67,11 +72,10 @@ const TotalPrice = styled.Text`
 `;
 
 interface Props {
-	tx: BSCTransaction;
-	walletAddress: string;
+	tx: CustomTransaction;
 }
 
-interface TransformedTransactionItem extends BSCTransaction {
+interface TransformedTransactionItem extends CustomTransaction {
 	amountToken: string;
 	gasToken: string;
 	amountUsd: string;
@@ -79,7 +83,7 @@ interface TransformedTransactionItem extends BSCTransaction {
 	totalUsd: string;
 }
 
-export default function TransactionItem({tx, walletAddress}: Props) {
+export default function TransactionItem({tx}: Props) {
 	const prices = useSelector((state: RootState) => state.coingecko.prices);
 	const [item, setItem] = useState<TransformedTransactionItem>();
 
@@ -95,14 +99,14 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 				gasToken: gasToken.toString(10),
 				amountUsd: amountUsd.toFixed(2),
 				gasUsd: gasUsd.toFixed(2),
-				totalUsd: `${walletAddress === tx.from ? "-" : "+"}$${amountUsd.plus(gasUsd).toFixed(2)}`,
+				totalUsd: `${tx.outgoing ? "-" : "+"}$${amountUsd.plus(gasUsd).toFixed(2)}`,
 			}),
 		);
-	}, [prices.bnb, tx, walletAddress]);
+	}, [prices.bnb, tx]);
 
 	const detectTransactionDirection = useMemo(() => {
-		return walletAddress.toLocaleLowerCase() === tx.from.toLowerCase() ? "outgoing" : "incoming";
-	}, [tx.from, walletAddress]);
+		return tx.outgoing ? "outgoing" : "incoming";
+	}, [tx.outgoing]);
 
 	const chipColor = useMemo(
 		() => (detectTransactionDirection === "incoming" ? "#bdb0d0" : "#6cc7f2"),
@@ -116,13 +120,13 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 	const sucessColor = useMemo(() => (tx.isError === "0" ? "#77dd77" : "#ff6961"), [tx.isError]);
 
 	return (
-		<Container>
+		<Container $compact={tx.compact}>
 			<RowContainer $flex={1}>
 				<ChipsContainer>
 					<TextChip text={detectTransactionDirection} color={chipColor} />
 					<TextChip text={successChip} color={sucessColor} style={{marginLeft: 4}} />
 				</ChipsContainer>
-				<BlockNoText numberOfLines={1}>Block: {tx.blockNumber}</BlockNoText>
+				{!tx.compact && <BlockNoText numberOfLines={1}>Block: {tx.blockNumber}</BlockNoText>}
 				<TransactionAgo numberOfLines={1}>{fromNow(parseInt(tx.timeStamp, 10) * 1000)}</TransactionAgo>
 			</RowContainer>
 			<RowContainer $flex={2}>
@@ -130,7 +134,7 @@ export default function TransactionItem({tx, walletAddress}: Props) {
 					{item?.amountToken} BNB
 				</AmountText>
 				<GasUsed numberOfLines={1}>{item?.gasToken} BNB</GasUsed>
-				<TotalPrice>{item?.totalUsd}</TotalPrice>
+				{!tx.compact && <TotalPrice>{item?.totalUsd}</TotalPrice>}
 			</RowContainer>
 		</Container>
 	);
