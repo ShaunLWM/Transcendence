@@ -10,6 +10,7 @@ export interface ITransaction {
 	to: string;
 	value: string;
 	gasPrice: string;
+	gasUsed: string;
 	isError: string;
 	confirmations: string;
 	address: Realm.Results<WalletSchema> | WalletSchema;
@@ -26,6 +27,7 @@ export default class TransactionSchema {
 	to: string;
 	value: string;
 	gasPrice: string;
+	gasUsed: string;
 	isError: string;
 	confirmations: string;
 	address: Realm.Results<WalletSchema> | WalletSchema;
@@ -44,6 +46,7 @@ export default class TransactionSchema {
 			to: "string",
 			value: "string",
 			gasPrice: "string",
+			gasUsed: "string",
 			isError: "string",
 			confirmations: "string",
 			address: {
@@ -63,6 +66,7 @@ export default class TransactionSchema {
 		this.to = tx.to;
 		this.value = tx.value;
 		this.gasPrice = tx.gasPrice;
+		this.gasUsed = tx.gasUsed;
 		this.isError = tx.isError;
 		this.confirmations = tx.confirmations;
 		this.address = tx.address;
