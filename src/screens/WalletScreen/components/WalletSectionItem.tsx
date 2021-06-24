@@ -1,9 +1,10 @@
+import {useNavigation} from "@react-navigation/native";
 import React from "react";
 import styled from "styled-components/native";
 import {IWallet} from "../../../models/WalletSchema";
 import {getWalletIcon} from "../../../utils/Helper";
 
-const Container = styled.View`
+const Container = styled.Pressable`
 	display: flex;
 	flex-direction: row;
 	background-color: #f1f1f1;
@@ -36,8 +37,17 @@ interface Props {
 }
 
 export default function WalletSectionItem({wallet}: Props) {
+	const navigation = useNavigation();
+
+	const onItemPress = () => {
+		navigation.navigate("TransactionsHistory", {
+			address: wallet.address,
+			type: wallet.type,
+		});
+	};
+
 	return (
-		<Container>
+		<Container onPress={onItemPress}>
 			<Logo source={getWalletIcon(wallet.type)} />
 			<Panel>
 				<Name>{wallet.name}</Name>
