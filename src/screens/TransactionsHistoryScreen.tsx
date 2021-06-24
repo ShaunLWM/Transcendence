@@ -98,7 +98,7 @@ export default function TransactionsHistoryScreen() {
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
 				data={transactions}
-				renderItem={({item}) => <TransactionItem key={item.hash} tx={item} walletAddress={route.params.address} />}
+				renderItem={({item}) => <TransactionItem key={item.hash} tx={item} />}
 				keyExtractor={item => item.hash}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} progressViewOffset={200} />}
 			/>
