@@ -129,7 +129,7 @@ export default function WalletScreen() {
 				style={styles.listContainer}
 				contentContainerStyle={styles.listContent}
 				CollapsibleHeaderComponent={<BigHeader text="Home" />}
-				headerHeight={140}
+				headerHeight={160}
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
 				renderSectionHeader={({section: {title}}) => <SectionHeader>{title}</SectionHeader>}

@@ -97,7 +97,7 @@ export default function TransactionsHistoryScreen() {
 				style={styles.listContainer}
 				contentContainerStyle={styles.listContent}
 				CollapsibleHeaderComponent={<BigHeader text="Transactions" onBackPress={() => navigation.goBack()} />}
-				headerHeight={140}
+				headerHeight={160}
 				statusBarHeight={getStatusBarHeight()}
 				headerContainerBackgroundColor={"white"}
 				data={transactions}

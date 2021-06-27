@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components/native";
+import {getStatusBarHeight} from "react-native-status-bar-height";
 
 const Container = styled.View`
 	padding-left: 12px;
 	height: 100%;
 	justify-content: space-evenly;
+	padding-bottom: ${getStatusBarHeight()}px;
 `;
 
 const Title = styled.Text`
