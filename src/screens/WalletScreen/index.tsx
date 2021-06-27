@@ -1,6 +1,7 @@
 import {useNavigation} from "@react-navigation/native";
+import allSettled from "promise.allsettled";
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text, ViewStyle} from "react-native";
+import {StyleSheet, ViewStyle} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
 import {FloatingAction} from "react-native-floating-action";
 import {getStatusBarHeight} from "react-native-status-bar-height";
@@ -8,13 +9,12 @@ import {UpdateMode} from "realm";
 import styled from "styled-components/native";
 import BigHeader from "../../common/BigHeader";
 import EmptySectionComponent from "../../common/EmptySectionComponent";
+import TransactionItem from "../../common/TransactionItem";
 import TransactionSchema, {ITransaction} from "../../models/TransactionSchema";
 import {IWallet} from "../../models/WalletSchema";
 import {get} from "../../utils/FetchManager";
 import {generateTransactionApi, getRealm} from "../../utils/Helper";
 import WalletSectionItem from "./components/WalletSectionItem";
-import allSettled from "promise.allsettled";
-import TransactionItem from "../../common/TransactionItem";
 
 const SectionHeader = styled.Text`
 	font-size: 30;
