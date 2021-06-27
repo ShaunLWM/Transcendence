@@ -57,11 +57,7 @@ function App() {
 				<RootStack.Navigator mode="modal">
 					<RootStack.Screen name="Main" component={MainStackScreens} options={{headerShown: false}} />
 					<RootStack.Screen name="AddWalletModal" component={AddWalletModal} />
-					<RootStack.Screen
-						name="QRCodeScannerModal"
-						component={QRCodeScannerModal}
-						options={{title: "Scan Wallet QR Code"}}
-					/>
+					<RootStack.Screen name="QRCodeScannerModal" component={QRCodeScannerModal} options={{headerShown: false}} />
 				</RootStack.Navigator>
 			</NavigationContainer>
 		</>
