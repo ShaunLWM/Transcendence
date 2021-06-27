@@ -14,7 +14,7 @@ const Title = styled.Text`
 `;
 
 const BackButtonPressable = styled.Pressable`
-	height: 28;
+	height: 28px;
 `;
 
 const BackButtonImage = styled.Image`
