@@ -19,6 +19,10 @@ const BackButtonPressable = styled.Pressable`
 	height: 28px;
 `;
 
+const EmptyView = styled.View`
+	height: 28px;
+`;
+
 const BackButtonImage = styled.Image`
 	height: 16px;
 	width: 16px;
@@ -37,10 +41,12 @@ interface Props {
 export default function BigHeader({text, onBackPress}: Props) {
 	return (
 		<Container>
-			{onBackPress && (
+			{onBackPress ? (
 				<BackButtonPressable onPress={() => onBackPress?.()}>
 					<BackButtonImage source={require("../assets/misc/back.png")} />
 				</BackButtonPressable>
+			) : (
+				<EmptyView />
 			)}
 			<TitleContainer>
 				<Title>{text}</Title>
