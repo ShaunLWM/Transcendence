@@ -7,11 +7,14 @@ import {UpdateMode} from "realm";
 import {MainStackParamList} from "..";
 import BigHeader from "../common/BigHeader";
 import TransactionItem from "../common/TransactionItem";
+import useCoinGeckoPrice from "../hooks/useCoinGeckoPrice";
 import TransactionSchema, {ITransaction} from "../models/TransactionSchema";
 import {get} from "../utils/FetchManager";
 import {generateTransactionApi, getRealm} from "../utils/Helper";
 
 export default function TransactionsHistoryScreen() {
+	useCoinGeckoPrice(true);
+
 	const route = useRoute<RouteProp<MainStackParamList, "TransactionsHistory">>();
 	const navigation = useNavigation();
 
