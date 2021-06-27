@@ -1,9 +1,10 @@
 import {Picker} from "@react-native-picker/picker";
-import {useNavigation} from "@react-navigation/native";
-import React, {useMemo, useState} from "react";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import React, {useEffect, useMemo, useState} from "react";
 import {Button} from "react-native";
 import {OutlinedTextField} from "rn-material-ui-textfield";
 import styled from "styled-components/native";
+import {RootStackParamList} from "../..";
 import {IWallet} from "../../models/WalletSchema";
 import {PriceKey, PriceKeysValue} from "../../store/slices/CoinGecko";
 import {getRealm, isValidAddress} from "../../utils/Helper";
@@ -20,6 +21,7 @@ const Content = styled.View`
 
 export default function AddWalletModal() {
 	const navigation = useNavigation();
+	const route = useRoute<RouteProp<RootStackParamList, "AddWalletModal">>();
 	const [name, setName] = useState("");
 	const [nameError, setNameError] = useState("");
 
@@ -27,6 +29,12 @@ export default function AddWalletModal() {
 	const [addressError, setAddressError] = useState("");
 
 	const [selectedToken, setSelectedToken] = useState<PriceKey>("bnb");
+
+	useEffect(() => {
+		if (route.params.address) {
+			setAddress(route.params.address);
+		}
+	}, [route.params.address]);
 
 	const onSubmit = async () => {
 		const realm = await getRealm();
