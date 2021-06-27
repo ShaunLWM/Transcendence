@@ -11,6 +11,7 @@ import useCoinGeckoPrice from "../hooks/useCoinGeckoPrice";
 import TransactionSchema, {ITransaction} from "../models/TransactionSchema";
 import {get} from "../utils/FetchManager";
 import {generateTransactionApi, getRealm} from "../utils/Helper";
+import {CustomTransaction} from "./WalletScreen";
 
 export default function TransactionsHistoryScreen() {
 	useCoinGeckoPrice(true);
@@ -20,7 +21,7 @@ export default function TransactionsHistoryScreen() {
 
 	const [error, setError] = useState<string>();
 	const [isLoading, setLoading] = useState(true);
-	const [transactions, setTransactions] = useState<ITransaction[]>([]);
+	const [transactions, setTransactions] = useState<CustomTransaction[]>([]);
 	const [page, setPage] = useState(1);
 
 	const [refreshing, setRefreshing] = useState(false);
@@ -29,13 +30,19 @@ export default function TransactionsHistoryScreen() {
 		async function setup() {
 			const realm = await getRealm();
 			const allTransactions = realm.objects<ITransaction>(TransactionSchema._schema.name).sorted("timeStamp", true);
-			setTransactions(allTransactions.map(tx => tx));
+			setTransactions(
+				Array.from(allTransactions).map(tx => ({
+					...JSON.parse(JSON.stringify(tx)),
+					outgoing: tx.from.toLowerCase() === route.params.address.toLowerCase(),
+				})),
+			);
+
 			setLoading(false);
 			setError("");
 		}
 
 		setup();
-	}, []);
+	}, [route.params.address]);
 
 	useEffect(() => {
 		if (!refreshing) return;
@@ -54,7 +61,13 @@ export default function TransactionsHistoryScreen() {
 				});
 
 				const allTransactions = realm.objects<ITransaction>(TransactionSchema._schema.name).sorted("timeStamp", true);
-				setTransactions(allTransactions.map(tx => tx));
+				setTransactions(
+					Array.from(allTransactions).map(tx => ({
+						...JSON.parse(JSON.stringify(tx)),
+						outgoing: tx.from.toLowerCase() === route.params.address.toLowerCase(),
+					})),
+				);
+
 				setLoading(false);
 				setError(undefined);
 				setRefreshing(false);
