@@ -1,14 +1,15 @@
 import {useNavigation} from "@react-navigation/native";
 import React from "react";
-import {Dimensions, Text} from "react-native";
+import {Dimensions} from "react-native";
+import {BarCodeReadEvent} from "react-native-camera";
 import QRCodeScanner from "react-native-qrcode-scanner";
 
 export default function QRCodeScannerModal() {
 	const {width, height} = Dimensions.get("window");
 	const navigation = useNavigation();
 
-	const onSuccess = () => {
-		navigation.navigate("AddWalletModal");
+	const onSuccess = (e: BarCodeReadEvent) => {
+		navigation.navigate("AddWalletModal", {address: e.data});
 	};
 
 	return <QRCodeScanner onRead={onSuccess} cameraStyle={{height, width}} />;
