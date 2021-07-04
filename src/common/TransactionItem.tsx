@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import React, {useEffect, useMemo, useState} from "react";
+import {Text} from "react-native";
 import {useSelector} from "react-redux";
 import styled from "styled-components/native";
 import {CustomTransaction} from "../screens/WalletScreen";
@@ -49,6 +50,11 @@ const BlockNoText = styled.Text`
 	/* background-color: blue; */
 	color: black;
 	font-size: 14px;
+`;
+
+const WalletNameText = styled.Text`
+	font-weight: bold;
+	margin-left: 6px;
 `;
 
 const TransactionAgo = styled.Text`
@@ -125,9 +131,10 @@ export default function TransactionItem({tx}: Props) {
 				<ChipsContainer>
 					<TextChip text={detectTransactionDirection} color={chipColor} />
 					<TextChip text={successChip} color={sucessColor} style={{marginLeft: 4}} />
+					<WalletNameText>{tx.name}</WalletNameText>
 				</ChipsContainer>
 				{!tx.compact && <BlockNoText numberOfLines={1}>Block: {tx.blockNumber}</BlockNoText>}
-				<TransactionAgo numberOfLines={1}>{fromNow(parseInt(tx.timeStamp, 10) * 1000)}</TransactionAgo>
+				<TransactionAgo numberOfLines={1}>{fromNow(tx.timeStamp * 1000)}</TransactionAgo>
 			</RowContainer>
 			<RowContainer $flex={2}>
 				<AmountText numberOfLines={1} adjustsFontSizeToFit>

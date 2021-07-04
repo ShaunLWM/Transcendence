@@ -1,10 +1,13 @@
 import dayjs from "dayjs";
 import RelativeTimePlugin from "dayjs/plugin/relativeTime";
+import hyperid from "hyperid";
 import Realm from "realm";
-import TransactionSchema from "../models/TransactionSchema";
-import WalletSchema from "../models/WalletSchema";
-import {PriceKey} from "../store/slices/CoinGecko";
 import {Keccak} from "sha3";
+import TransactionSchema, {ITransaction} from "../models/TransactionSchema";
+import WalletSchema, {IWallet} from "../models/WalletSchema";
+import {PriceKey} from "../store/slices/CoinGecko";
+import {get} from "./FetchManager";
+import uniqBy from "lodash.uniqby";
 
 dayjs.extend(RelativeTimePlugin);
 
@@ -74,8 +77,38 @@ export const isValidAddress = (type: PriceKey, address: string) => {
 	}
 };
 
+export const fetchFullTransaction = async (address: IWallet & Realm.Object, page = 1) => {
+	const realm = await getRealm();
+	const results = await get<TransactionAPIResult>(generateTransactionApi(address.type, address.address, page));
+	if (results.status === "1") {
+		try {
+			return realm.write(() => {
+				const newTxs = results.result.map(tx => transformApiToModel(tx, address));
+
+				// address.transactions by realmjs is problematic........
+				if (address.transactions) {
+					for (const tx of address.transactions) {
+						newTxs.push(tx);
+					}
+				}
+
+				console.log(uniqBy(newTxs, "hash"));
+				console.log(uniqBy(newTxs, "hash").length);
+				address.transactions = uniqBy(newTxs, "hash");
+				console.log(`DONE`);
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	console.log(`FAILED TO RETRIEVE`);
+	return Promise.reject();
+};
+
 export const getRealm = async () => {
 	return await Realm.open({
+		// schema: [WalletSchema, TransactionSchema],
 		schema: [WalletSchema._schema, TransactionSchema.schema],
 	});
 };
@@ -91,4 +124,17 @@ export const getWalletIcon = (type: PriceKey) => {
 		case "matic":
 			return require("../assets/logos/polygon.png");
 	}
+};
+
+export const transformApiToModel = (tx: BSCTransaction, address: IWallet & Realm.Object): ITransaction => {
+	return {
+		...tx,
+		timeStamp: parseInt(tx.timeStamp, 10),
+		address,
+		type: address.type,
+	};
+};
+
+export const generateId = () => {
+	return hyperid()();
 };

@@ -20,7 +20,7 @@ export type MainStackParamList = {
 export type RootStackParamList = {
 	Main: undefined;
 	AddWalletModal: {
-		address: string;
+		address?: string;
 	};
 	QRCodeScannerModal: undefined;
 };

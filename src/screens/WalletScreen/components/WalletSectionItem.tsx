@@ -11,6 +11,7 @@ const Container = styled.Pressable`
 	border-radius: 4px;
 	padding: 6px 0px;
 	align-items: center;
+	margin-bottom: 8px;
 `;
 
 const Logo = styled.Image`

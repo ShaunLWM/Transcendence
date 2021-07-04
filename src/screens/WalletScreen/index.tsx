@@ -1,23 +1,22 @@
 import {useNavigation} from "@react-navigation/native";
 import allSettled from "promise.allsettled";
-import React, {useEffect, useState} from "react";
-import {StyleSheet, ViewStyle} from "react-native";
+import React, {useCallback, useEffect, useState} from "react";
+import {RefreshControl, StyleSheet, ViewStyle} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
 import {FloatingAction} from "react-native-floating-action";
 import {getStatusBarHeight} from "react-native-status-bar-height";
-import {UpdateMode} from "realm";
 import styled from "styled-components/native";
 import BigHeader from "../../common/BigHeader";
 import EmptySectionComponent from "../../common/EmptySectionComponent";
 import TransactionItem from "../../common/TransactionItem";
-import TransactionSchema, {ITransaction} from "../../models/TransactionSchema";
+import {ITransaction} from "../../models/TransactionSchema";
 import {IWallet} from "../../models/WalletSchema";
-import {get} from "../../utils/FetchManager";
-import {generateTransactionApi, getRealm} from "../../utils/Helper";
+import {getHomeTransactions} from "../../utils/Database";
+import {fetchFullTransaction, getRealm} from "../../utils/Helper";
 import WalletSectionItem from "./components/WalletSectionItem";
 
 const SectionHeader = styled.Text`
-	font-size: 30;
+	font-size: 30px;
 `;
 
 const FAB_ACTIONS = [
@@ -43,7 +42,7 @@ const FAB_ACTIONS = [
 	},
 ];
 
-export interface CustomTransaction extends ITransaction {
+export interface CustomTransaction extends Omit<ITransaction, "address"> {
 	name?: string;
 	outgoing?: boolean;
 	compact?: boolean;
@@ -53,51 +52,26 @@ export default function WalletScreen() {
 	const navigation = useNavigation();
 	const [wallets, setWallets] = useState<IWallet[]>([]);
 	const [latestTransactions, setLatestTransactions] = useState<CustomTransaction[]>([]);
+	const [refreshing, setRefreshing] = useState(false);
 
 	useEffect(() => {
 		async function fetchAll() {
-			const map: Record<string, {name: string; outgoing: boolean}> = {};
-			const realm = await getRealm();
-			const addresses = realm.objects<IWallet>("WalletItem");
-			if (addresses.length < 1) return;
-			setWallets(addresses.map(address => address));
-			const results = await allSettled(
-				addresses.map(address => get<TransactionAPIResult>(generateTransactionApi(address.type, address.address, 1))),
-			);
-
-			let i = 0;
-			for (const result of results) {
-				if (result.status === "rejected" || result.value.message === "NOTOK") continue;
-				realm.write(() => {
-					(result.value.result as BSCTransaction[]).map(tx => {
-						realm.create<ITransaction>("TransactionItem", {...tx, type: addresses[i].type}, UpdateMode.Modified);
-					});
-				});
-
-				(result.value.result as BSCTransaction[]).map(tx => {
-					console.log(tx);
-					map[tx.hash] = {
-						name: addresses[i].name,
-						outgoing: tx.from.toLowerCase() === addresses[i].address.toLowerCase(),
-					};
-				});
-
-				i += 1;
+			// const map: Record<string, {name: string; outgoing: boolean}> = {};
+			try {
+				const realm = await getRealm();
+				const addresses = realm.objects<IWallet>("WalletItem");
+				if (addresses.length < 1) return;
+				setWallets(addresses.map(address => address));
+				await allSettled(addresses.map(address => fetchFullTransaction(address, 1)));
+				console.log(getHomeTransactions(addresses));
+				setLatestTransactions(getHomeTransactions(addresses));
+				setRefreshing(false);
+			} catch (error) {
+				console.log(error);
 			}
-
-			console.log(map);
-
-			const allTransactions = realm
-				.objects<ITransaction>(TransactionSchema._schema.name)
-				.sorted("timeStamp", true)
-				.slice(0, 5);
-
-			setLatestTransactions(
-				Array.from(allTransactions).map(tx => ({...JSON.parse(JSON.stringify(tx)), ...map[tx.hash], compact: true})),
-			);
 		}
 		fetchAll();
-	}, []);
+	}, [refreshing]);
 
 	const renderEmptyContent = ({section}: {section: any}) => {
 		if (section.data.length < 1) {
@@ -122,6 +96,10 @@ export default function WalletScreen() {
 				});
 		}
 	};
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+	}, []);
 
 	return (
 		<>
@@ -148,6 +126,7 @@ export default function WalletScreen() {
 						keyExtractor: (item, index) => `${index}`,
 					},
 				]}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} progressViewOffset={140} />}
 			/>
 			<FloatingAction actions={FAB_ACTIONS} onPressItem={onFabSelect} />
 		</>

@@ -1,4 +1,5 @@
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import omit from "lodash.omit";
 import React, {useCallback, useEffect, useState} from "react";
 import {RefreshControl, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {CollapsibleHeaderFlatList} from "react-native-collapsible-header-views";
@@ -12,6 +13,7 @@ import TransactionSchema, {ITransaction} from "../models/TransactionSchema";
 import {get} from "../utils/FetchManager";
 import {generateTransactionApi, getRealm} from "../utils/Helper";
 import {CustomTransaction} from "./WalletScreen";
+import WalletSchema, {IWallet} from "../models/WalletSchema";
 
 export default function TransactionsHistoryScreen() {
 	useCoinGeckoPrice(true);
@@ -29,14 +31,16 @@ export default function TransactionsHistoryScreen() {
 	useEffect(() => {
 		async function setup() {
 			const realm = await getRealm();
-			const allTransactions = realm.objects<ITransaction>(TransactionSchema._schema.name).sorted("timeStamp", true);
+			const address = realm.objects("WalletItem").filtered(`address == "${route.params.address}"`);
+			if (!address || address.length < 1) return;
 			setTransactions(
-				Array.from(allTransactions).map(tx => ({
-					...JSON.parse(JSON.stringify(tx)),
-					outgoing: tx.from.toLowerCase() === route.params.address.toLowerCase(),
-				})),
+				(address[0] as unknown as IWallet).transactions.map(tx => {
+					return {
+						...omit(tx, "address"),
+						outgoing: tx.from.toLowerCase() === route.params.address.toLowerCase(),
+					};
+				}),
 			);
-
 			setLoading(false);
 			setError("");
 		}

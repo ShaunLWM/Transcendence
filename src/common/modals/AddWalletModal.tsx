@@ -7,7 +7,7 @@ import styled from "styled-components/native";
 import {RootStackParamList} from "../..";
 import {IWallet} from "../../models/WalletSchema";
 import {PriceKey, PriceKeysValue} from "../../store/slices/CoinGecko";
-import {getRealm, isValidAddress} from "../../utils/Helper";
+import {generateId, getRealm, isValidAddress} from "../../utils/Helper";
 
 const Container = styled.View`
 	flex: 1;
@@ -22,6 +22,7 @@ const Content = styled.View`
 export default function AddWalletModal() {
 	const navigation = useNavigation();
 	const route = useRoute<RouteProp<RootStackParamList, "AddWalletModal">>();
+	const {params} = route;
 	const [name, setName] = useState("");
 	const [nameError, setNameError] = useState("");
 
@@ -31,16 +32,18 @@ export default function AddWalletModal() {
 	const [selectedToken, setSelectedToken] = useState<PriceKey>("bnb");
 
 	useEffect(() => {
-		if (route.params.address) {
-			setAddress(route.params.address);
+		if (params && params.address) {
+			setAddress(params.address);
 		}
-	}, [route.params.address]);
+	}, [params]);
 
 	const onSubmit = async () => {
 		const realm = await getRealm();
 		try {
 			realm.write(() => {
-				realm.create<IWallet>("WalletItem", {address, name, type: "bnb"});
+				const id = generateId();
+				console.log({id, address, name, type: "bnb"});
+				realm.create<IWallet>("WalletItem", {id, address, name, type: "bnb"});
 				navigation.goBack();
 			});
 		} catch (err) {

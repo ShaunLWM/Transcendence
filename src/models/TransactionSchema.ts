@@ -2,53 +2,76 @@ import Realm from "realm";
 import WalletSchema from "./WalletSchema";
 
 export interface ITransaction {
-	type: string;
-	hash: string;
 	blockNumber: string;
-	timeStamp: string; // TODO: Change to number so we can sort
+	timeStamp: number;
+	hash: string;
+	nonce: string;
+	blockHash: string;
+	transactionIndex: string;
 	from: string;
 	to: string;
 	value: string;
-	gasPrice: string;
-	gasUsed: string;
-	isError: string;
-	confirmations: string;
-	address: Realm.Results<WalletSchema> | WalletSchema;
 	gas: string;
-	nonce: string;
+	gasPrice: string;
+	isError: string;
+	txreceipt_status: string;
+	input: string;
+	contractAddress: string;
+	cumulativeGasUsed: string;
+	gasUsed: string;
+	confirmations: string;
+
+	address: Realm.Results<WalletSchema> | WalletSchema;
+	type: string;
 }
 
 export default class TransactionSchema {
-	type: string;
-	hash: string;
 	blockNumber: string;
-	timeStamp: string;
+	timeStamp: number; // TODO: Change to number so we can sort
+	hash: string;
+	nonce: string;
+	blockHash: string;
+	transactionIndex: string;
 	from: string;
 	to: string;
 	value: string;
-	gasPrice: string;
-	gasUsed: string;
-	isError: string;
-	confirmations: string;
-	address: Realm.Results<WalletSchema> | WalletSchema;
 	gas: string;
-	nonce: string;
+	gasPrice: string;
+	isError: string;
+	txreceipt_status: string;
+	input: string;
+	contractAddress: string;
+	cumulativeGasUsed: string;
+	gasUsed: string;
+	confirmations: string;
+
+	type: string;
+	address: Realm.Results<WalletSchema> | WalletSchema;
 
 	public static _schema: Realm.ObjectSchema = {
 		name: "TransactionItem",
 		primaryKey: "hash",
 		properties: {
-			type: "string", // bsc, polygon etc
-			hash: "string",
 			blockNumber: "string",
-			timeStamp: "string",
+			timeStamp: "int",
+			hash: "string",
+			nonce: "string",
+			blockHash: "string",
+			transactionIndex: "string",
 			from: "string",
 			to: "string",
 			value: "string",
+			gas: "string",
 			gasPrice: "string",
-			gasUsed: "string",
 			isError: "string",
+			txreceipt_status: "string",
+			input: "string",
+			contractAddress: "string",
+			cumulativeGasUsed: "string",
+			gasUsed: "string",
 			confirmations: "string",
+
+			type: "string", // bsc, polygon etc
 			address: {
 				type: "linkingObjects",
 				objectType: "WalletItem",
@@ -57,23 +80,28 @@ export default class TransactionSchema {
 		},
 	};
 	constructor(tx: ITransaction) {
-		// Object.assign(this, tx);
-		this.type = tx.type;
-		this.hash = tx.hash;
 		this.blockNumber = tx.blockNumber;
 		this.timeStamp = tx.timeStamp;
+		this.hash = tx.hash;
+		this.nonce = tx.nonce;
+		this.blockHash = tx.blockHash;
+		this.transactionIndex = tx.transactionIndex;
 		this.from = tx.from;
 		this.to = tx.to;
 		this.value = tx.value;
+		this.gas = tx.gas;
 		this.gasPrice = tx.gasPrice;
-		this.gasUsed = tx.gasUsed;
 		this.isError = tx.isError;
+		this.txreceipt_status = tx.txreceipt_status;
+		this.input = tx.input;
+		this.contractAddress = tx.contractAddress;
+		this.cumulativeGasUsed = tx.cumulativeGasUsed;
+		this.gasUsed = tx.gasUsed;
 		this.confirmations = tx.confirmations;
+
+		this.type = tx.type;
 		this.address = tx.address;
 		// https://github.com/bStrano/Stralom-Financial/blob/master/src/modules/Transactions/models/TransactionCategory.ts
-
-		this.gas = tx.gas;
-		this.nonce = tx.nonce;
 	}
 
 	static get schema(): Realm.ObjectSchema {

@@ -3,6 +3,7 @@ import {PriceKey} from "../store/slices/CoinGecko";
 import TransactionSchema from "./TransactionSchema";
 
 export interface IWallet {
+	id: string;
 	address: string;
 	name: string;
 	type: PriceKey;
@@ -10,6 +11,7 @@ export interface IWallet {
 }
 
 export default class WalletSchema {
+	public id: string;
 	public address: string;
 	public name: string;
 	public type: PriceKey;
@@ -17,8 +19,9 @@ export default class WalletSchema {
 
 	public static _schema: Realm.ObjectSchema = {
 		name: "WalletItem",
-		primaryKey: "address",
+		primaryKey: "id",
 		properties: {
+			id: {type: "string"},
 			address: {type: "string", indexed: true},
 			name: {type: "string"},
 			type: {type: "string"},
@@ -26,7 +29,8 @@ export default class WalletSchema {
 		},
 	};
 
-	constructor({name, address, type, transactions = []}: IWallet) {
+	constructor({id, name, address, type, transactions = []}: IWallet) {
+		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.type = type;
