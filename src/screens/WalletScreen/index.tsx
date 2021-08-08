@@ -1,6 +1,7 @@
+import BottomSheet from "@gorhom/bottom-sheet";
 import {useNavigation} from "@react-navigation/native";
 import allSettled from "promise.allsettled";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {RefreshControl, StyleSheet, ViewStyle} from "react-native";
 import {CollapsibleHeaderSectionList} from "react-native-collapsible-header-views";
 import {FloatingAction} from "react-native-floating-action";
@@ -8,6 +9,7 @@ import {getStatusBarHeight} from "react-native-status-bar-height";
 import styled from "styled-components/native";
 import BigHeader from "../../common/BigHeader";
 import EmptySectionComponent from "../../common/EmptySectionComponent";
+import TransactionInformation from "../../common/TransactionInformation";
 import TransactionItem from "../../common/TransactionItem";
 import {ITransaction} from "../../models/TransactionSchema";
 import {IWallet} from "../../models/WalletSchema";
@@ -53,6 +55,10 @@ export default function WalletScreen() {
 	const [wallets, setWallets] = useState<IWallet[]>([]);
 	const [latestTransactions, setLatestTransactions] = useState<CustomTransaction[]>([]);
 	const [refreshing, setRefreshing] = useState(false);
+	const [selectedTransaction, setSelectedTransaction] = useState<CustomTransaction>();
+
+	const bottomSheetRef = useRef<BottomSheet>(null);
+	const snapPoints = useMemo(() => ["25%", "50%"], []);
 
 	useEffect(() => {
 		async function fetchAll() {
@@ -103,6 +109,9 @@ export default function WalletScreen() {
 
 	return (
 		<>
+			<BottomSheet ref={bottomSheetRef} index={-1} snapPoints={snapPoints}>
+				<TransactionInformation tx={selectedTransaction} />
+			</BottomSheet>
 			<CollapsibleHeaderSectionList
 				style={styles.listContainer}
 				contentContainerStyle={styles.listContent}
@@ -116,7 +125,9 @@ export default function WalletScreen() {
 					{
 						title: "Latest Transactions",
 						data: latestTransactions,
-						renderItem: ({item}: {item: CustomTransaction}) => <TransactionItem key={item.hash} tx={item} />,
+						renderItem: ({item}: {item: CustomTransaction}) => (
+							<TransactionItem key={item.hash} tx={item} onPress={setSelectedTransaction} />
+						),
 						keyExtractor: (item, index) => `${index}`,
 					},
 					{

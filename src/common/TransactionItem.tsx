@@ -1,6 +1,5 @@
 import BigNumber from "bignumber.js";
 import React, {useEffect, useMemo, useState} from "react";
-import {Text} from "react-native";
 import {useSelector} from "react-redux";
 import styled from "styled-components/native";
 import {CustomTransaction} from "../screens/WalletScreen";
@@ -14,7 +13,7 @@ interface ContainerProps {
 	$compact?: boolean;
 }
 
-const Container = styled.View<ContainerProps>`
+const Container = styled.Pressable<ContainerProps>`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
@@ -79,6 +78,7 @@ const TotalPrice = styled.Text`
 
 interface Props {
 	tx: CustomTransaction;
+	onPress?: (tx: CustomTransaction) => void;
 }
 
 interface TransformedTransactionItem extends CustomTransaction {
@@ -89,7 +89,7 @@ interface TransformedTransactionItem extends CustomTransaction {
 	totalUsd: string;
 }
 
-export default function TransactionItem({tx}: Props) {
+export default function TransactionItem({tx, onPress}: Props) {
 	const prices = useSelector((state: RootState) => state.coingecko.prices);
 	const [item, setItem] = useState<TransformedTransactionItem>();
 
@@ -126,7 +126,7 @@ export default function TransactionItem({tx}: Props) {
 	const sucessColor = useMemo(() => (tx.isError === "0" ? "#77dd77" : "#ff6961"), [tx.isError]);
 
 	return (
-		<Container $compact={tx.compact}>
+		<Container $compact={tx.compact} onPress={() => onPress && onPress(tx)}>
 			<RowContainer $flex={1}>
 				<ChipsContainer>
 					<TextChip text={detectTransactionDirection} color={chipColor} />
